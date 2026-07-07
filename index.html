@@ -475,6 +475,17 @@ h2 {
   display: block;
 }
 
+/* ───────── QR Code ───────── */
+.qr-wrap {
+  margin-top: 1.5rem;
+  text-align: center;
+  opacity: 0; transform: translateY(15px);
+  transition: all 0.45s 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.slide.active .qr-wrap { opacity: 1; transform: translateY(0); }
+.qr-wrap img { border-radius: 12px; border: 1px solid var(--border); }
+.qr-wrap p { font-size: 0.75rem; color: var(--muted); margin-top: 0.5rem; }
+
 /* ───────── Responsive ───────── */
 @media (max-width: 768px) {
   .cards.cols-3, .cards.cols-4, .cards.cols-5 { grid-template-columns: 1fr 1fr; }
@@ -532,7 +543,7 @@ h2 {
         <img src="assets/portrait.jpg" alt="Mohamed Aziz Tlili" />
       </div>
       <div class="about-text">
-        <h2>Engineer, researcher, <span class="gradient">builder.</span></h2>
+        <h2>AI Engineer building intelligent software for <span class="gradient">real-world problems.</span></h2>
         <p>
           I design and build production-grade software where AI meets great product
           engineering. From real-time computer vision pipelines to polished web and mobile
@@ -756,6 +767,10 @@ h2 {
       <a href="mailto:medaziztlilipro@gmail.com" class="cta-link">📧 Email Me</a>
       <a href="https://www.linkedin.com/in/med-aziz-tlili-351b4639b/" class="cta-link">LinkedIn</a>
       <a href="https://github.com/med-tlili" class="cta-link">GitHub</a>
+    </div>
+    <div class="qr-wrap">
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://portfolio-lime-three-81.vercel.app/&bgcolor=0a0a0f&color=6c5ce7&margin=10" alt="Portfolio QR Code" />
+      <p>Scan to view portfolio</p>
     </div>
   </div>
 
