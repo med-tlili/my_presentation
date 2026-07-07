@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Mohamed Aziz Tlili — Presentation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+/* ───────── Reset & Base ───────── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --bg: #0a0a0f;
+  --surface: rgba(255,255,255,0.04);
+  --border: rgba(255,255,255,0.08);
+  --text: #f0f0f5;
+  --muted: #8888a0;
+  --brand: #6c5ce7;
+  --brand-2: #00cec9;
+  --gradient: linear-gradient(135deg, #6c5ce7, #00cec9);
+}
+html { font-size: 16px; }
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ───────── Slide Container ───────── */
+.deck { position: relative; width: 100%; height: 100%; }
+.slide {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 5vh 5vw;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(50px) scale(0.96);
+  transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+              visibility 0s 0.55s;
+}
+.slide.active {
+  opacity: 1; visibility: visible;
+  transform: translateY(0) scale(1);
+  transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+              visibility 0s 0s;
+}
+/* Exit forward */
+.slide.exit-fwd {
+  opacity: 0; visibility: hidden;
+  transform: translateY(-50px) scale(0.96);
+}
+/* Exit backward */
+.slide.exit-back {
+  opacity: 0; visibility: hidden;
+  transform: translateY(50px) scale(0.96);
+}
+
+/* ───────── Ambient Background ───────── */
+.slide::before {
+  content: '';
+  position: absolute;
+  width: 500px; height: 500px;
+  border-radius: 50%;
+  filter: blur(140px);
+  opacity: 0.2;
+  pointer-events: none;
+  z-index: 0;
+}
+.slide:nth-child(odd)::before { background: var(--brand); top: -10%; right: -5%; }
+.slide:nth-child(even)::before { background: var(--brand-2); bottom: -10%; left: -5%; }
+.slide > * { position: relative; z-index: 1; }
+
+/* ───────── Grid Background ───────── */
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ───────── Typography ───────── */
+.eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--brand);
+  margin-bottom: 1rem;
+  opacity: 0; transform: translateY(15px);
+  transition: all 0.45s 0.15s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.slide.active .eyebrow { opacity: 1; transform: translateY(0); }
+
+h1 {
+  font-size: clamp(2.8rem, 5.5vw, 4.5rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -1.5px;
+  text-align: center;
+  max-width: 900px;
+  opacity: 0; transform: translateY(25px);
+  transition: all 0.55s 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.slide.active h1 { opacity: 1; transform: translateY(0); }
+
+h1 .gradient, h2 .gradient {
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+h2 {
+  font-size: clamp(2rem, 3.8vw, 3rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -1px;
+  text-align: center;
+  max-width: 800px;
+  opacity: 0; transform: translateY(25px);
+  transition: all 0.55s 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.slide.active h2 { opacity: 1; transform: translateY(0); }
+
+.subtitle {
+  font-size: 1.2rem;
+  color: var(--muted);
+  text-align: center;
+  max-width: 640px;
+  margin-top: 1rem;
+  line-height: 1.6;
+  opacity: 0; transform: translateY(15px);
+  transition: all 0.45s 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.slide.active .subtitle { opacity: 1; transform: translateY(0); }
+
+/* ───────── Cards Grid ───────── */
+.cards { display: grid; gap: 1rem; width: 100%; max-width: 960px; margin-top: 1.5rem; }
+.cards.cols-2 { grid-template-columns: 1fr 1fr; }
+.cards.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+.cards.cols-4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
+.cards.cols-5 { grid-template-columns: 1fr 1fr 1fr 1fr 1fr; }
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.5rem;
+  opacity: 0;
+  transform: translateY(25px) scale(0.95);
+  transition: all 0.45s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease;
+}
+.slide.active .card { opacity: 1; transform: translateY(0) scale(1); }
+.card:hover { border-color: rgba(108, 92, 231, 0.3); box-shadow: 0 6px 30px rgba(108, 92, 231, 0.08); }
+
+.card-icon {
+  width: 44px; height: 44px;
+  border-radius: 12px;
+  background: var(--gradient);
+  display: grid; place-items: center;
+  margin-bottom: 0.8rem;
+  font-size: 1.2rem;
+}
+.card h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.4rem; }
+.card p { font-size: 0.9rem; color: var(--muted); line-height: 1.55; }
+
+.card:nth-child(1) { transition-delay: 0.1s; }
+.card:nth-child(2) { transition-delay: 0.17s; }
+.card:nth-child(3) { transition-delay: 0.24s; }
+.card:nth-child(4) { transition-delay: 0.31s; }
+.card:nth-child(5) { transition-delay: 0.38s; }
+.card:nth-child(6) { transition-delay: 0.45s; }
+
+/* ───────── Skills Tags ───────── */
+.tags { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; max-width: 800px; margin-top: 1.2rem; }
+.tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  padding: 0.4rem 1rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  opacity: 0; transform: scale(0.8);
+  transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.slide.active .tag { opacity: 1; transform: scale(1); }
+.tag:nth-child(1) { transition-delay: 0.12s; }
+.tag:nth-child(2) { transition-delay: 0.17s; }
+.tag:nth-child(3) { transition-delay: 0.22s; }
+.tag:nth-child(4) { transition-delay: 0.27s; }
+.tag:nth-child(5) { transition-delay: 0.32s; }
+.tag:nth-child(6) { transition-delay: 0.37s; }
+.tag:nth-child(7) { transition-delay: 0.42s; }
+.tag:nth-child(8) { transition-delay: 0.47s; }
+.tag:nth-child(9) { transition-delay: 0.52s; }
+.tag:nth-child(10) { transition-delay: 0.57s; }
+.tag:nth-child(11) { transition-delay: 0.62s; }
+.tag:nth-child(12) { transition-delay: 0.67s; }
+
+/* ───────── Stats Row ───────── */
+.stats {
+  display: flex; gap: 3rem;
+  margin-top: 1.8rem;
+  opacity: 0; transform: translateY(15px);
+  transition: all 0.45s 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.slide.active .stats { opacity: 1; transform: translateY(0); }
+.stat { text-align: center; }
+.stat-num {
+  font-size: 2.8rem;
+  font-weight: 800;
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.stat-label { font-size: 0.8rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 0.15rem; }
+
+/* ───────── About Layout ───────── */
+.about-layout {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 3.5rem;
+  max-width: 1100px;
+  width: 100%;
+  margin-top: 1.5rem;
+  align-items: start;
+}
+.about-photo {
+  opacity: 0; transform: scale(0.9);
+  transition: all 0.55s 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.slide.active .about-photo { opacity: 1; transform: scale(1); }
+.about-photo img {
+  width: 100%;
+  aspect-ratio: 3/4;
+  object-fit: cover;
+  border-radius: 16px;
+  border: 2px solid var(--border);
+}
+.about-text {
+  opacity: 0; transform: translateX(20px);
+  transition: all 0.55s 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.slide.active .about-text { opacity: 1; transform: translateX(0); }
+.about-text h2 { text-align: left; margin-bottom: 0.8rem; font-size: clamp(2rem, 3.5vw, 2.8rem); }
+.about-text p { font-size: 1.05rem; color: var(--muted); line-height: 1.65; margin-bottom: 1rem; }
+
+/* ───────── Skill Detail Grid ───────── */
+.skill-detail {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem;
+  max-width: 1000px;
+  width: 100%;
+  margin-top: 1.5rem;
+}
+.skill-group {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.5rem;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.slide.active .skill-group { opacity: 1; transform: translateY(0); }
+.skill-group:nth-child(1) { transition-delay: 0.15s; }
+.skill-group:nth-child(2) { transition-delay: 0.22s; }
+.skill-group:nth-child(3) { transition-delay: 0.29s; }
+.skill-group:nth-child(4) { transition-delay: 0.36s; }
+.skill-group h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.6rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.skill-group h3 .dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--gradient);
+}
+.skill-group ul {
+  list-style: none;
+  padding: 0;
+}
+.skill-group li {
+  font-size: 0.88rem;
+  color: var(--muted);
+  padding: 0.25rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  display: flex;
+  justify-content: space-between;
+}
+.skill-group li:last-child { border-bottom: none; }
+.skill-group li .level {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--brand);
+}
+
+/* ───────── Project Highlight ───────── */
+.project-showcase {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  max-width: 880px;
+  width: 100%;
+  margin-top: 1.5rem;
+  align-items: center;
+}
+.project-visual {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  overflow: hidden;
+  opacity: 0; transform: translateX(-25px);
+  transition: all 0.55s 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.slide.active .project-visual { opacity: 1; transform: translateX(0); }
+.project-visual video { width: 100%; display: block; }
+.project-visual .placeholder { font-size: 3rem; opacity: 0.3; }
+.project-info {
+  opacity: 0; transform: translateX(25px);
+  transition: all 0.55s 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.slide.active .project-info { opacity: 1; transform: translateX(0); }
+.project-info h3 { font-size: 1.6rem; font-weight: 700; margin-bottom: 0.5rem; }
+.project-info p { font-size: 0.95rem; color: var(--muted); line-height: 1.6; margin-bottom: 0.8rem; }
+.project-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+.project-tags span {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  color: var(--brand);
+}
+
+/* ───────── Timeline ───────── */
+.timeline { max-width: 580px; width: 100%; margin-top: 1.5rem; }
+.timeline-item {
+  display: flex; gap: 1.2rem;
+  padding: 0.8rem 0;
+  border-left: 2px solid var(--border);
+  padding-left: 1.2rem;
+  position: relative;
+  opacity: 0; transform: translateX(-15px);
+  transition: all 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.slide.active .timeline-item { opacity: 1; transform: translateX(0); }
+.timeline-item:nth-child(1) { transition-delay: 0.12s; }
+.timeline-item:nth-child(2) { transition-delay: 0.24s; }
+.timeline-item:nth-child(3) { transition-delay: 0.36s; }
+.timeline-item:nth-child(4) { transition-delay: 0.48s; }
+.timeline-item::before {
+  content: '';
+  position: absolute; left: -6px; top: 1.1rem;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--gradient);
+  box-shadow: 0 0 10px rgba(108, 92, 231, 0.4);
+}
+.tl-year { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; color: var(--brand); min-width: 48px; }
+.tl-content h3 { font-size: 1rem; font-weight: 600; }
+.tl-content p { font-size: 0.88rem; color: var(--muted); margin-top: 0.15rem; }
+
+/* ───────── Contact CTA ───────── */
+.cta-links {
+  display: flex; gap: 0.8rem;
+  margin-top: 1.8rem;
+  opacity: 0; transform: translateY(15px);
+  transition: all 0.45s 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.slide.active .cta-links { opacity: 1; transform: translateY(0); }
+.cta-link {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  padding: 0.7rem 1.3rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+.cta-link:hover { border-color: var(--brand); background: rgba(108, 92, 231, 0.1); transform: translateY(-2px); }
+.cta-link.primary { background: var(--gradient); border: none; color: #fff; }
+.cta-link.primary:hover { box-shadow: 0 6px 25px rgba(108, 92, 231, 0.3); }
+
+/* ───────── Progress Bar ───────── */
+.progress { position: fixed; top: 0; left: 0; height: 3px; background: var(--gradient); z-index: 100; transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1); }
+
+/* ───────── Slide Counter ───────── */
+.counter { position: fixed; bottom: 1.8rem; right: 2.2rem; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--muted); z-index: 100; }
+.counter .current { color: var(--text); font-weight: 600; }
+
+/* ───────── Nav Arrows ───────── */
+.nav-arrow {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 1rem;
+  cursor: pointer;
+  z-index: 100;
+  display: grid; place-items: center;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(8px);
+}
+.nav-arrow:hover { border-color: var(--brand); color: var(--text); background: rgba(108, 92, 231, 0.1); }
+.nav-arrow:disabled { opacity: 0.2; cursor: default; border-color: var(--border); background: var(--surface); }
+.nav-arrow.left { left: 1.5rem; }
+.nav-arrow.right { right: 1.5rem; }
+
+/* ───────── Nav Dots ───────── */
+.nav-dots { position: fixed; bottom: 1.8rem; left: 50%; transform: translateX(-50%); display: flex; gap: 0.5rem; z-index: 100; }
+.nav-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.12);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+}
+.nav-dot:hover { background: rgba(255,255,255,0.3); }
+.nav-dot.active { background: var(--brand); box-shadow: 0 0 8px rgba(108, 92, 231, 0.5); transform: scale(1.4); }
+
+/* ───────── Hint ───────── */
+.hint { position: fixed; bottom: 1.8rem; left: 2.2rem; font-size: 0.7rem; color: var(--muted); z-index: 100; opacity: 0.5; }
+.hint kbd {
+  font-family: 'JetBrains Mono', monospace;
+  padding: 0.12rem 0.35rem;
+  border-radius: 3px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  font-size: 0.65rem;
+}
+
+/* ───────── Logo ───────── */
+.logo { position: fixed; top: 1.8rem; left: 2.2rem; display: flex; align-items: center; gap: 0.5rem; z-index: 100; }
+.logo-mark {
+  width: 28px; height: 28px;
+  border-radius: 7px;
+  background: var(--gradient);
+  display: grid; place-items: center;
+  font-weight: 700; font-size: 0.75rem; color: #fff;
+}
+.logo-text { font-weight: 600; font-size: 0.8rem; letter-spacing: -0.3px; }
+
+/* ───────── Video Player ───────── */
+.video-wrap {
+  width: 100%;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: #000;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.5s 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.slide.active .video-wrap { opacity: 1; transform: translateY(0); }
+.video-wrap video {
+  width: 100%;
+  display: block;
+}
+
+/* ───────── Logo Bar ───────── */
+.logo-bar {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-top: 1.5rem;
+  opacity: 0;
+  transform: translateY(15px);
+  transition: all 0.5s 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.slide.active .logo-bar { opacity: 1; transform: translateY(0); }
+.logo-bar img {
+  height: 50px;
+  filter: brightness(0.9);
+  opacity: 0.7;
+  transition: opacity 0.3s;
+}
+.logo-bar img:hover { opacity: 1; }
+
+/* ───────── Module Grid ───────── */
+.module-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  max-width: 880px;
+  width: 100%;
+  margin-top: 1.5rem;
+}
+.module-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.slide.active .module-card { opacity: 1; transform: translateY(0); }
+.module-card:nth-child(1) { transition-delay: 0.15s; }
+.module-card:nth-child(2) { transition-delay: 0.25s; }
+.module-card:nth-child(3) { transition-delay: 0.35s; }
+.module-card img {
+  width: 100%;
+  aspect-ratio: 16/10;
+  object-fit: cover;
+  display: block;
+}
+.module-card .mc-body {
+  padding: 0.8rem 1rem;
+}
+.module-card .mc-body h3 { font-size: 0.85rem; font-weight: 600; margin-bottom: 0.2rem; }
+.module-card .mc-body p { font-size: 0.75rem; color: var(--muted); }
+
+/* ───────── Project Image ───────── */
+.project-img {
+  width: 100%;
+  max-width: 1000px;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  margin-top: 1.5rem;
+  opacity: 0;
+  transform: scale(0.95);
+  transition: all 0.55s 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.slide.active .project-img { opacity: 1; transform: scale(1); }
+.project-img img {
+  width: 100%;
+  max-height: 65vh;
+  object-fit: contain;
+  display: block;
+}
+
+/* ───────── Responsive ───────── */
+@media (max-width: 768px) {
+  .cards.cols-3, .cards.cols-4, .cards.cols-5 { grid-template-columns: 1fr 1fr; }
+  .project-showcase, .about-layout { grid-template-columns: 1fr; }
+  .about-layout { gap: 1.5rem; }
+  .skill-detail { grid-template-columns: 1fr; }
+  .stats { gap: 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="logo">
+  <div class="logo-mark">M</div>
+  <span class="logo-text">Mohamed Aziz</span>
+</div>
+
+<div class="progress" id="progress"></div>
+
+<div class="nav-dots" id="navDots"></div>
+
+<div class="counter">
+  <span class="current" id="currentSlide">01</span>
+  <span> / </span>
+  <span id="totalSlides">09</span>
+</div>
+
+<div class="hint">
+  scroll &bull; click &bull; swipe
+</div>
+
+<div class="deck" id="deck">
+
+  <!-- ═══════ SLIDE 1: Title ═══════ -->
+  <div class="slide active" data-slide="0">
+    <div class="eyebrow">Open to opportunities</div>
+    <h1>Building intelligent<br/>software with <span class="gradient">AI.</span></h1>
+    <div class="subtitle">
+      I'm Mohamed Aziz Tlili — an AI &amp; Full Stack Software Engineer
+      crafting products powered by Computer Vision, Machine Learning
+      and Modern Web Technologies.
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="stat-num">3+</div><div class="stat-label">Projects</div></div>
+      <div class="stat"><div class="stat-num">5+</div><div class="stat-label">AI Modules</div></div>
+      <div class="stat"><div class="stat-num">25+</div><div class="stat-label">Technologies</div></div>
+    </div>
+  </div>
+
+  <!-- ═══════ SLIDE 2: About + Photo ═══════ -->
+  <div class="slide" data-slide="1">
+    <div class="eyebrow">About Me</div>
+    <div class="about-layout">
+      <div class="about-photo">
+        <img src="../src/assets/portrait.jpg" alt="Mohamed Aziz Tlili" />
+      </div>
+      <div class="about-text">
+        <h2>Engineer, researcher, <span class="gradient">builder.</span></h2>
+        <p>
+          I design and build production-grade software where AI meets great product
+          engineering. From real-time computer vision pipelines to polished web and mobile
+          experiences, my work sits at the intersection of research and craft.
+        </p>
+        <div class="cards cols-3" style="margin-top: 0.5rem;">
+          <div class="card">
+            <div class="card-icon">🎓</div>
+            <h3>Education</h3>
+            <p>Software Engineering student (Licence, final year) — ISIGK, specializing in Deep Learning &amp; Computer Vision.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">🚀</div>
+            <h3>Mission</h3>
+            <p>Turn hard AI problems into products people love using.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">⭐</div>
+            <h3>Values</h3>
+            <p>Clarity, craft, honesty. Ship things worth defending.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ SLIDE 3: Tech Stack + Skills (merged) ═══════ -->
+  <div class="slide" data-slide="2">
+    <div class="eyebrow">Tech Stack</div>
+    <h2>Deep tooling for <span class="gradient">every layer.</span></h2>
+    <div class="skill-detail" style="margin-top: 1rem;">
+      <div class="skill-group">
+        <h3><span class="dot"></span> AI & Machine Learning</h3>
+        <ul>
+          <li><span>PyTorch</span><span class="level">advanced</span></li>
+          <li><span>TensorFlow / Keras</span><span class="level">advanced</span></li>
+          <li><span>YOLOv8 / YOLO-NAS</span><span class="level">advanced</span></li>
+          <li><span>LangChain / LLMs</span><span class="level">intermediate</span></li>
+          <li><span>HuggingFace Transformers</span><span class="level">intermediate</span></li>
+        </ul>
+      </div>
+      <div class="skill-group">
+        <h3><span class="dot"></span> Computer Vision</h3>
+        <ul>
+          <li><span>OpenCV</span><span class="level">advanced</span></li>
+          <li><span>MediaPipe Pose</span><span class="level">advanced</span></li>
+          <li><span>Kalman Filtering</span><span class="level">advanced</span></li>
+          <li><span>Object Detection &amp; Tracking</span><span class="level">advanced</span></li>
+          <li><span>3D Reconstruction</span><span class="level">intermediate</span></li>
+        </ul>
+      </div>
+      <div class="skill-group">
+        <h3><span class="dot"></span> Frontend &amp; Backend</h3>
+        <ul>
+          <li><span>React / Next.js</span><span class="level">advanced</span></li>
+          <li><span>TypeScript</span><span class="level">advanced</span></li>
+          <li><span>FastAPI</span><span class="level">advanced</span></li>
+          <li><span>Node.js / Express</span><span class="level">intermediate</span></li>
+          <li><span>Tailwind CSS</span><span class="level">advanced</span></li>
+        </ul>
+      </div>
+      <div class="skill-group">
+        <h3><span class="dot"></span> Mobile &amp; DevOps</h3>
+        <ul>
+          <li><span>Flutter / Dart</span><span class="level">advanced</span></li>
+          <li><span>Kotlin</span><span class="level">intermediate</span></li>
+          <li><span>Docker</span><span class="level">intermediate</span></li>
+          <li><span>PostgreSQL / MongoDB</span><span class="level">intermediate</span></li>
+          <li><span>GitHub Actions</span><span class="level">basic</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ SLIDE 4: Results & Impact ═══════ -->
+  <div class="slide" data-slide="3">
+    <div class="eyebrow">Results &amp; Impact</div>
+    <h2>Numbers that <span class="gradient">speak.</span></h2>
+    <div class="cards cols-3" style="margin-top: 1.5rem; max-width: 800px;">
+      <div class="card" style="text-align: center;">
+        <div class="stat-num" style="font-size: 2.4rem;">94%</div>
+        <p style="margin-top: 0.3rem;">Player &amp; ball detection accuracy on real match footage</p>
+      </div>
+      <div class="card" style="text-align: center;">
+        <div class="stat-num" style="font-size: 2.4rem;">60+</div>
+        <p style="margin-top: 0.3rem;">Frames per second — real-time pipeline performance</p>
+      </div>
+      <div class="card" style="text-align: center;">
+        <div class="stat-num" style="font-size: 2.4rem;">3&times;</div>
+        <p style="margin-top: 0.3rem;">Faster than baseline approach with optimized inference</p>
+      </div>
+    </div>
+    <div class="cards cols-3" style="margin-top: 1rem; max-width: 800px;">
+      <div class="card" style="text-align: center;">
+        <div class="stat-num" style="font-size: 2.4rem;">3D</div>
+        <p style="margin-top: 0.3rem;">Trajectory reconstruction from dual-view court cameras</p>
+      </div>
+      <div class="card" style="text-align: center;">
+        <div class="stat-num" style="font-size: 2.4rem;">VAR</div>
+        <p style="margin-top: 0.3rem;">Automated highlight generation with cinematic zoom</p>
+      </div>
+      <div class="card" style="text-align: center;">
+        <div class="stat-num" style="font-size: 2.4rem;">2</div>
+        <p style="margin-top: 0.3rem;">Shipped production apps — CV platform &amp; IoT mobile</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ SLIDE 5: Featured Project ═══════ -->
+  <div class="slide" data-slide="4">
+    <div class="eyebrow">Featured Project</div>
+    <h2 style="margin-bottom: 0.3rem;">Padel AI <span class="gradient">Analysis System</span></h2>
+    <p style="font-size: 0.8rem; color: var(--brand-2); text-align: center; margin-bottom: 0.6rem;">Computer Vision &amp; AI — built as part of a 2-person engineering team</p><!-- TEAM: Adem Soudeni handled Flutter frontend + Supabase backend -->
+    <div class="video-wrap" style="max-width: 1000px; width: 100%;">
+      <video src="assets/cv_pipeline_demo_h264.mp4" autoplay muted loop playsinline></video>
+    </div>
+    <div style="display: flex; gap: 0.4rem; justify-content: center; margin-top: 1rem; flex-wrap: wrap; max-width: 800px;">
+      <span class="tag">Python</span><span class="tag">YOLOv8</span><span class="tag">OpenCV</span><span class="tag">MediaPipe</span><span class="tag">FastAPI</span><span class="tag">React</span>
+    </div>
+    <p style="font-size: 0.9rem; color: var(--muted); text-align: center; max-width: 680px; margin-top: 0.8rem; line-height: 1.5;">
+      Transforms raw Padel match footage into professional broadcast-style analysis with 3D trajectory reconstruction and VAR-ready highlight generation.
+    </p>
+  </div>
+
+  <!-- ═══════ SLIDE 6: Padel Pipeline ═══════ -->
+  <div class="slide" data-slide="5">
+    <div class="eyebrow">How It Works</div>
+    <h2 style="margin-bottom: 0;">The <span class="gradient">Pipeline.</span></h2>
+    <div class="project-img" style="margin-top: 0.5rem;">
+      <img src="assets/img6_16.png" alt="Padel AI CV Pipeline" />
+    </div>
+  </div>
+
+  <!-- ═══════ SLIDE 7: TempGuard ═══════ -->
+  <div class="slide" data-slide="6">
+    <div class="eyebrow">Mobile Project</div>
+    <h2 style="margin-bottom: 0.6rem;">Temp<span class="gradient">Guard</span></h2>
+    <div class="project-img" style="max-width: 400px;">
+      <img src="assets/tempguard_screenshot.png" alt="TempGuard Mobile App" />
+    </div>
+    <p style="font-size: 0.85rem; color: var(--muted); text-align: center; max-width: 680px; margin-top: 0.8rem; line-height: 1.5;">
+      IoT temperature monitoring mobile app with real-time alerts, live dashboards, and historical charts. Built with Flutter + Supabase.
+    </p>
+    <div style="display: flex; gap: 0.4rem; justify-content: center; margin-top: 0.6rem; flex-wrap: wrap;">
+      <span class="tag">Flutter</span><span class="tag">Dart</span><span class="tag">Supabase</span><span class="tag">IoT</span><span class="tag">Real-time</span>
+    </div>
+  </div>
+
+  <!-- ═══════ SLIDE 8: Other Projects ═══════ -->
+  <div class="slide" data-slide="7">
+    <div class="eyebrow">More Projects</div>
+    <h2>Things I've <span class="gradient">built.</span></h2>
+    <div class="cards cols-2" style="margin-top: 1rem; max-width: 700px;">
+      <div class="card">
+        <div class="card-icon">🤖</div>
+        <h3>AI Coach</h3>
+        <p>LLM-powered coaching using MediaPipe pose + Llama 3 for biomechanical feedback on Padel technique.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">👁️</div>
+        <h3>CV Modules</h3>
+        <p>Hand detection with action triggers, face recognition, expression analysis, and ML prediction games.</p>
+      </div>
+    </div>
+    <div class="video-wrap" style="max-width: 700px; width: 100%; margin-top: 1rem;">
+      <video src="assets/ai_coach.mp4" autoplay muted loop playsinline></video>
+    </div>
+  </div>
+
+  <!-- ═══════ SLIDE 9: Journey ═══════ -->
+  <div class="slide" data-slide="8">
+    <div class="eyebrow">Journey</div>
+    <h2>My <span class="gradient">path.</span></h2>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; max-width: 1000px; width: 100%; margin-top: 1.2rem; align-items: start;">
+      <div class="timeline">
+        <div class="timeline-item">
+          <span class="tl-year">Jan–Jun 2026</span><!-- VERIFY: confirm actual month range -->
+          <div class="tl-content">
+            <h3>Padel AI Platform</h3>
+            <p>Shipped end-to-end CV system — 94% accuracy, 60+ FPS.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <span class="tl-year">Mar–Jun 2026</span><!-- VERIFY: confirm actual month range -->
+          <div class="tl-content">
+            <h3>AI Coach + VAR System</h3>
+            <p>LLM-powered coaching and automated highlight engine.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <span class="tl-year">Feb–Apr 2026</span><!-- VERIFY: confirm actual month range -->
+          <div class="tl-content">
+            <h3>TempGuard</h3>
+            <p>IoT temperature monitoring mobile app with Flutter.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <span class="tl-year">Feb–May 2026</span>
+          <div class="tl-content">
+            <h3>Software Engineering Intern</h3>
+            <p>4-month internship at ULTIMA ICD building AI-powered applications.</p>
+          </div>
+        </div>
+      </div>
+      <div class="video-wrap">
+        <video src="assets/var_demo.mp4" autoplay muted loop playsinline></video>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ SLIDE 10: Contact ═══════ -->
+  <div class="slide" data-slide="9">
+    <div class="eyebrow">Let's Connect</div>
+    <h2>Let's build something <span class="gradient">great.</span></h2>
+    <div class="subtitle">
+      I'm looking for opportunities to contribute to innovative teams
+      building AI-powered products. Let's talk.
+    </div>
+    <div class="cta-links">
+      <a href="assets/resume.pdf" class="cta-link primary" download>📄 Download CV</a><!-- FILL: place your resume PDF at assets/resume.pdf -->
+      <a href="mailto:medaziztlilipro@gmail.com" class="cta-link">📧 Email Me</a>
+      <a href="https://www.linkedin.com/in/med-aziz-tlili-351b4639b/" class="cta-link">LinkedIn</a>
+      <a href="https://github.com/med-tlili" class="cta-link">GitHub</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const slides = document.querySelectorAll('.slide');
+const total = slides.length;
+let current = 0;
+let animating = false;
+
+document.getElementById('totalSlides').textContent = String(total).padStart(2, '0');
+
+// Build nav dots
+const dotsContainer = document.getElementById('navDots');
+slides.forEach((_, i) => {
+  const dot = document.createElement('button');
+  dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
+  dot.setAttribute('aria-label', `Slide ${i + 1}`);
+  dot.addEventListener('click', (e) => { e.stopPropagation(); goTo(i); });
+  dotsContainer.appendChild(dot);
+});
+
+function goTo(index) {
+  if (animating || index < 0 || index >= total || index === current) return;
+  animating = true;
+  const dir = index > current ? 'fwd' : 'back';
+
+  // Exit current slide
+  slides[current].classList.remove('active');
+  slides[current].classList.add(dir === 'fwd' ? 'exit-fwd' : 'exit-back');
+
+  const old = current;
+  current = index;
+
+  // Enter new slide
+  slides[current].classList.add('active');
+  updateUI();
+
+  setTimeout(() => {
+    slides[old].classList.remove('exit-fwd', 'exit-back');
+    animating = false;
+  }, 550);
+}
+
+function updateUI() {
+  document.getElementById('currentSlide').textContent = String(current + 1).padStart(2, '0');
+  document.getElementById('progress').style.width = `${((current + 1) / total) * 100}%`;
+  document.querySelectorAll('.nav-dot').forEach((d, i) => d.classList.toggle('active', i === current));
+}
+
+// Keyboard
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); goTo(current + 1); }
+  if (e.key === 'ArrowLeft') { e.preventDefault(); goTo(current - 1); }
+  if (e.key === 'Home') { e.preventDefault(); goTo(0); }
+  if (e.key === 'End') { e.preventDefault(); goTo(total - 1); }
+});
+
+// Touch swipe
+let touchStartX = 0;
+document.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; });
+document.addEventListener('touchend', (e) => {
+  const diff = touchStartX - e.changedTouches[0].clientX;
+  if (Math.abs(diff) > 50) { diff > 0 ? goTo(current + 1) : goTo(current - 1); }
+});
+
+// Mouse wheel
+let wheelTimeout = null;
+document.addEventListener('wheel', (e) => {
+  e.preventDefault();
+  if (wheelTimeout) return;
+  wheelTimeout = setTimeout(() => { wheelTimeout = null; }, 600);
+  if (e.deltaY > 0) goTo(current + 1);
+  else if (e.deltaY < 0) goTo(current - 1);
+}, { passive: false });
+
+// Click left/right halves
+document.addEventListener('click', (e) => {
+  if (e.target.closest('.nav-dot, .cta-link, a, button, .nav-arrow')) return;
+  const x = e.clientX / window.innerWidth;
+  x > 0.5 ? goTo(current + 1) : goTo(current - 1);
+});
+
+updateUI();
+</script>
+</body>
+</html>
