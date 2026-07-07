@@ -232,9 +232,15 @@ h2 {
 /* ───────── About Layout ───────── */
 .about-layout {
   display: grid;
+<<<<<<< HEAD
   grid-template-columns: 340px 1fr;
   gap: 3.5rem;
   max-width: 1100px;
+=======
+  grid-template-columns: 280px 1fr;
+  gap: 3rem;
+  max-width: 1000px;
+>>>>>>> 5c223b9252a2cae9dc1162dcdb12924a5b70b02d
   width: 100%;
   margin-top: 1.5rem;
   align-items: start;
@@ -256,8 +262,13 @@ h2 {
   transition: all 0.55s 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .slide.active .about-text { opacity: 1; transform: translateX(0); }
+<<<<<<< HEAD
 .about-text h2 { text-align: left; margin-bottom: 0.8rem; font-size: clamp(2rem, 3.5vw, 2.8rem); }
 .about-text p { font-size: 1.05rem; color: var(--muted); line-height: 1.65; margin-bottom: 1rem; }
+=======
+.about-text h2 { text-align: left; margin-bottom: 0.8rem; }
+.about-text p { font-size: 1rem; color: var(--muted); line-height: 1.65; margin-bottom: 1rem; }
+>>>>>>> 5c223b9252a2cae9dc1162dcdb12924a5b70b02d
 
 /* ───────── Skill Detail Grid ───────── */
 .skill-detail {
@@ -562,9 +573,15 @@ h2 {
 @media (max-width: 768px) {
   .cards.cols-3, .cards.cols-4, .cards.cols-5 { grid-template-columns: 1fr 1fr; }
   .project-showcase, .about-layout { grid-template-columns: 1fr; }
+<<<<<<< HEAD
   .about-layout { gap: 1.5rem; }
   .skill-detail { grid-template-columns: 1fr; }
   .stats { gap: 1.5rem; }
+=======
+  .skill-detail { grid-template-columns: 1fr; }
+  .stats { gap: 1.5rem; }
+  .nav-arrow { display: none; }
+>>>>>>> 5c223b9252a2cae9dc1162dcdb12924a5b70b02d
 }
 </style>
 </head>
@@ -603,7 +620,11 @@ h2 {
     <div class="stats">
       <div class="stat"><div class="stat-num">3+</div><div class="stat-label">Projects</div></div>
       <div class="stat"><div class="stat-num">5+</div><div class="stat-label">AI Modules</div></div>
+<<<<<<< HEAD
       <div class="stat"><div class="stat-num">25+</div><div class="stat-label">Technologies</div></div>
+=======
+      <div class="stat"><div class="stat-num">50+</div><div class="stat-label">Technologies</div></div>
+>>>>>>> 5c223b9252a2cae9dc1162dcdb12924a5b70b02d
     </div>
   </div>
 
@@ -612,7 +633,7 @@ h2 {
     <div class="eyebrow">About Me</div>
     <div class="about-layout">
       <div class="about-photo">
-        <img src="../src/assets/portrait.jpg" alt="Mohamed Aziz Tlili" />
+        <img src="assets/portrait.jpg" alt="Mohamed Aziz Tlili" />
       </div>
       <div class="about-text">
         <h2>Engineer, researcher, <span class="gradient">builder.</span></h2>
@@ -625,7 +646,11 @@ h2 {
           <div class="card">
             <div class="card-icon">🎓</div>
             <h3>Education</h3>
+<<<<<<< HEAD
             <p>Software Engineering student (Licence, final year) — ISIGK, specializing in Deep Learning &amp; Computer Vision.</p>
+=======
+            <p>Software Engineering — Deep Learning &amp; Computer Vision.</p>
+>>>>>>> 5c223b9252a2cae9dc1162dcdb12924a5b70b02d
           </div>
           <div class="card">
             <div class="card-icon">🚀</div>
@@ -642,11 +667,57 @@ h2 {
     </div>
   </div>
 
+<<<<<<< HEAD
   <!-- ═══════ SLIDE 3: Tech Stack + Skills (merged) ═══════ -->
   <div class="slide" data-slide="2">
     <div class="eyebrow">Tech Stack</div>
     <h2>Deep tooling for <span class="gradient">every layer.</span></h2>
     <div class="skill-detail" style="margin-top: 1rem;">
+=======
+  <!-- ═══════ SLIDE 3: Skills Overview ═══════ -->
+  <div class="slide" data-slide="2">
+    <div class="eyebrow">Tech Stack</div>
+    <h2>Deep tooling for <span class="gradient">every layer.</span></h2>
+    <div class="tags">
+      <span class="tag">Python</span>
+      <span class="tag">TypeScript</span>
+      <span class="tag">PyTorch</span>
+      <span class="tag">TensorFlow</span>
+      <span class="tag">YOLOv8</span>
+      <span class="tag">OpenCV</span>
+      <span class="tag">MediaPipe</span>
+      <span class="tag">React</span>
+      <span class="tag">FastAPI</span>
+      <span class="tag">Flutter</span>
+      <span class="tag">Docker</span>
+      <span class="tag">PostgreSQL</span>
+    </div>
+    <div class="cards cols-4" style="margin-top: 1.5rem;">
+      <div class="card">
+        <h3>AI / ML</h3>
+        <p>PyTorch, TensorFlow, LangChain, HuggingFace</p>
+      </div>
+      <div class="card">
+        <h3>Computer Vision</h3>
+        <p>OpenCV, YOLOv8, MediaPipe, Kalman Filter</p>
+      </div>
+      <div class="card">
+        <h3>Full Stack</h3>
+        <p>React, Next.js, FastAPI, Node.js</p>
+      </div>
+      <div class="card">
+        <h3>Mobile</h3>
+        <p>Flutter, Kotlin, React Native</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ SLIDE 4: Skills Deep Dive ═══════ -->
+  <div class="slide" data-slide="3">
+    <div class="eyebrow">Skills Detail</div>
+    <h2>What I <span class="gradient">work with.</span></h2>
+    <div class="skill-detail">
+>>>>>>> 5c223b9252a2cae9dc1162dcdb12924a5b70b02d
       <div class="skill-group">
         <h3><span class="dot"></span> AI & Machine Learning</h3>
         <ul>
@@ -663,12 +734,20 @@ h2 {
           <li><span>OpenCV</span><span class="level">advanced</span></li>
           <li><span>MediaPipe Pose</span><span class="level">advanced</span></li>
           <li><span>Kalman Filtering</span><span class="level">advanced</span></li>
+<<<<<<< HEAD
           <li><span>Object Detection &amp; Tracking</span><span class="level">advanced</span></li>
+=======
+          <li><span>Object Detection & Tracking</span><span class="level">advanced</span></li>
+>>>>>>> 5c223b9252a2cae9dc1162dcdb12924a5b70b02d
           <li><span>3D Reconstruction</span><span class="level">intermediate</span></li>
         </ul>
       </div>
       <div class="skill-group">
+<<<<<<< HEAD
         <h3><span class="dot"></span> Frontend &amp; Backend</h3>
+=======
+        <h3><span class="dot"></span> Frontend & Backend</h3>
+>>>>>>> 5c223b9252a2cae9dc1162dcdb12924a5b70b02d
         <ul>
           <li><span>React / Next.js</span><span class="level">advanced</span></li>
           <li><span>TypeScript</span><span class="level">advanced</span></li>
@@ -678,7 +757,11 @@ h2 {
         </ul>
       </div>
       <div class="skill-group">
+<<<<<<< HEAD
         <h3><span class="dot"></span> Mobile &amp; DevOps</h3>
+=======
+        <h3><span class="dot"></span> Mobile & DevOps</h3>
+>>>>>>> 5c223b9252a2cae9dc1162dcdb12924a5b70b02d
         <ul>
           <li><span>Flutter / Dart</span><span class="level">advanced</span></li>
           <li><span>Kotlin</span><span class="level">intermediate</span></li>
@@ -690,6 +773,7 @@ h2 {
     </div>
   </div>
 
+<<<<<<< HEAD
   <!-- ═══════ SLIDE 4: Results & Impact ═══════ -->
   <div class="slide" data-slide="3">
     <div class="eyebrow">Results &amp; Impact</div>
@@ -729,14 +813,25 @@ h2 {
     <div class="eyebrow">Featured Project</div>
     <h2 style="margin-bottom: 0.3rem;">Padel AI <span class="gradient">Analysis System</span></h2>
     <p style="font-size: 0.8rem; color: var(--brand-2); text-align: center; margin-bottom: 0.6rem;">Computer Vision &amp; AI — built as part of a 2-person engineering team</p><!-- TEAM: Adem Soudeni handled Flutter frontend + Supabase backend -->
+=======
+  <!-- ═══════ SLIDE 5: Featured Project ═══════ -->
+  <div class="slide" data-slide="4">
+    <div class="eyebrow">Featured Project</div>
+    <h2 style="margin-bottom: 0.6rem;">Padel AI <span class="gradient">Analysis System</span></h2>
+>>>>>>> 5c223b9252a2cae9dc1162dcdb12924a5b70b02d
     <div class="video-wrap" style="max-width: 1000px; width: 100%;">
       <video src="assets/cv_pipeline_demo_h264.mp4" autoplay muted loop playsinline></video>
     </div>
     <div style="display: flex; gap: 0.4rem; justify-content: center; margin-top: 1rem; flex-wrap: wrap; max-width: 800px;">
       <span class="tag">Python</span><span class="tag">YOLOv8</span><span class="tag">OpenCV</span><span class="tag">MediaPipe</span><span class="tag">FastAPI</span><span class="tag">React</span>
     </div>
+<<<<<<< HEAD
     <p style="font-size: 0.9rem; color: var(--muted); text-align: center; max-width: 680px; margin-top: 0.8rem; line-height: 1.5;">
       Transforms raw Padel match footage into professional broadcast-style analysis with 3D trajectory reconstruction and VAR-ready highlight generation.
+=======
+    <p style="font-size: 0.85rem; color: var(--muted); text-align: center; max-width: 680px; margin-top: 0.8rem; line-height: 1.5;">
+      Transforms raw Padel match footage into professional broadcast-style analysis with 3D trajectory reconstruction, automated scoring, and VAR-ready highlights.
+>>>>>>> 5c223b9252a2cae9dc1162dcdb12924a5b70b02d
     </p>
   </div>
 
@@ -792,31 +887,50 @@ h2 {
     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; max-width: 1000px; width: 100%; margin-top: 1.2rem; align-items: start;">
       <div class="timeline">
         <div class="timeline-item">
+<<<<<<< HEAD
           <span class="tl-year">Jan–Jun 2026</span><!-- VERIFY: confirm actual month range -->
+=======
+          <span class="tl-year">2026</span>
+>>>>>>> 5c223b9252a2cae9dc1162dcdb12924a5b70b02d
           <div class="tl-content">
             <h3>Padel AI Platform</h3>
             <p>Shipped end-to-end CV system — 94% accuracy, 60+ FPS.</p>
           </div>
         </div>
         <div class="timeline-item">
+<<<<<<< HEAD
           <span class="tl-year">Mar–Jun 2026</span><!-- VERIFY: confirm actual month range -->
+=======
+          <span class="tl-year">2026</span>
+>>>>>>> 5c223b9252a2cae9dc1162dcdb12924a5b70b02d
           <div class="tl-content">
             <h3>AI Coach + VAR System</h3>
             <p>LLM-powered coaching and automated highlight engine.</p>
           </div>
         </div>
         <div class="timeline-item">
+<<<<<<< HEAD
           <span class="tl-year">Feb–Apr 2026</span><!-- VERIFY: confirm actual month range -->
+=======
+          <span class="tl-year">2026</span>
+>>>>>>> 5c223b9252a2cae9dc1162dcdb12924a5b70b02d
           <div class="tl-content">
             <h3>TempGuard</h3>
             <p>IoT temperature monitoring mobile app with Flutter.</p>
           </div>
         </div>
         <div class="timeline-item">
+<<<<<<< HEAD
           <span class="tl-year">Feb–May 2026</span>
           <div class="tl-content">
             <h3>Software Engineering Intern</h3>
             <p>4-month internship at ULTIMA ICD building AI-powered applications.</p>
+=======
+          <span class="tl-year">2026</span>
+          <div class="tl-content">
+            <h3>Software Engineering Intern</h3>
+            <p>4-month internship building AI-powered applications.</p>
+>>>>>>> 5c223b9252a2cae9dc1162dcdb12924a5b70b02d
           </div>
         </div>
       </div>
@@ -835,8 +949,12 @@ h2 {
       building AI-powered products. Let's talk.
     </div>
     <div class="cta-links">
+<<<<<<< HEAD
       <a href="assets/resume.pdf" class="cta-link primary" download>📄 Download CV</a><!-- FILL: place your resume PDF at assets/resume.pdf -->
       <a href="mailto:medaziztlilipro@gmail.com" class="cta-link">📧 Email Me</a>
+=======
+      <a href="mailto:medaziztlilipro@gmail.com" class="cta-link primary">📧 Email Me</a>
+>>>>>>> 5c223b9252a2cae9dc1162dcdb12924a5b70b02d
       <a href="https://www.linkedin.com/in/med-aziz-tlili-351b4639b/" class="cta-link">LinkedIn</a>
       <a href="https://github.com/med-tlili" class="cta-link">GitHub</a>
     </div>
